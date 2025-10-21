@@ -11,10 +11,9 @@
   },
   "dependencies": {
     "@react-native-community/hooks": "github:react-native-community/hooks",
-    "expo": "~53.0.20",
-    "expo-status-bar": "~2.2.3",
+    "expo": "^54.0.16",
     "react": "19.0.0",
-    "react-native": "0.79.5"
+    "react-native": "0.79.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

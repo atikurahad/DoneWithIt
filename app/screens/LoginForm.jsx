@@ -44,11 +44,7 @@ const LoginForm = () => {
         onChangeText={setPassword}
       />
 
-      {/* <View>
-        <Text href="">Forgot your password?</Text>
-        <Text href="">You haven't account? SignUp Here</Text>
-         <a href=""></a> 
-      </View> */}
+    
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
