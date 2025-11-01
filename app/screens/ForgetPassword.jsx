@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   StyleSheet,
   Text,
@@ -8,28 +9,39 @@ import {
   View,
 } from "react-native";
 
-// You were missing 'useState' to manage the input,
-// and a proper component return structure.
-
 const ForgotPassword = () => {
-  // 1. Initialize state for the email input
+  //  Manage input and loading state
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // 2. Handler for the button press
-  const handleResetPassword = () => {
+  // Handler for sending password reset link
+  const handleResetPassword = async () => {
     if (email.trim() === "") {
       Alert.alert("Error", "Please enter your email or username.");
       return;
     }
-    // In a real app, you would call an API here to send the reset link
-    Alert.alert(
-      "Password Reset",
-      `A password reset link has been sent to ${email}.`
-    );
-    setEmail(""); // Clear the input after action
+
+    try {
+      setLoading(true);
+
+      //  Simulated API request — replace with your backend endpoint later
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      //  Show success message
+      Alert.alert(
+        "Password Reset",
+        `A password reset link has been sent to ${email}.`
+      );
+
+      //  Clear input field
+      setEmail("");
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // 3. The component must return JSX wrapped in parentheses
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Forgot Password?</Text>
@@ -37,7 +49,7 @@ const ForgotPassword = () => {
         Enter your email or username below to receive a password reset link.
       </Text>
 
-      {/* TextInput for Email */}
+      {/* Email input field */}
       <TextInput
         style={styles.input}
         placeholder="Enter your email or username"
@@ -45,18 +57,27 @@ const ForgotPassword = () => {
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
-        onChangeText={setEmail} // Use the state setter
+        onChangeText={setEmail}
       />
 
-      {/* Button using TouchableOpacity */}
-      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
-        <Text style={styles.buttonText}>Send Reset Link</Text>
+      {/* Send button */}
+      <TouchableOpacity
+        style={[styles.button, !email.trim() && styles.buttonDisabled]}
+        onPress={handleResetPassword}
+        disabled={!email.trim() || loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Send Reset Link</Text>
+        )}
       </TouchableOpacity>
     </View>
   );
 };
 
-// 4. Basic Styles
+export default ForgotPassword;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -65,13 +86,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 15,
     color: "#666",
     marginBottom: 30,
     textAlign: "center",
@@ -84,18 +105,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 20,
     fontSize: 16,
+    color: "#000",
   },
   button: {
-    backgroundColor: "#007AFF", // A standard blue for action buttons
+    backgroundColor: "#007AFF",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
   },
+  buttonDisabled: {
+    backgroundColor: "#A5C9FF",
+  },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
 });
-
-export default ForgotPassword;
